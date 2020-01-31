@@ -13,6 +13,8 @@ use syn::parse_macro_input;
 
 mod response;
 
+mod route;
+
 #[proc_macro]
 #[proc_macro_error]
 pub fn response(tokens: TokenStream) -> TokenStream {
@@ -20,8 +22,15 @@ pub fn response(tokens: TokenStream) -> TokenStream {
     block.expand()
 }
 
+#[proc_macro]
+#[proc_macro_error]
+pub fn route(tokens: TokenStream) -> TokenStream {
+    let block = parse_macro_input!(tokens as route::Block);
+    block.expand()
+}
+
 #[test]
-fn response_test() {
+fn main_test() {
     let t = trybuild::TestCases::new();
-    t.pass("src/tests/response.rs");
+    t.pass("src/tests/*.rs");
 }
