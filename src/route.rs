@@ -4,6 +4,7 @@ use std::collections::LinkedList;
 use syn::group::parse_braces;
 use std::iter::FromIterator;
 use proc_macro_error::proc_macro::TokenStream;
+use regex::Regex;
 
 pub struct Block(pub Vec<Match>);
 
@@ -20,6 +21,21 @@ impl Parse for Block {
 }
 
 impl Block {
+
+    pub fn check(&self) {
+        // Try compiling Regex
+        for m in &self.0 {
+            for pair in &m.pairs {
+                let s = pair.path.value();
+                if let Err(e) = Regex::new(&s) {
+                    emit_error!(
+                        pair.path.span(),
+                        e
+                    );
+                }
+            }
+        }
+    }
 
     pub fn expand(&self) -> TokenStream {
         // TODO

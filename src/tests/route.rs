@@ -17,6 +17,11 @@ route! {
         "/simple" => Procedure2,
         "/*/end" => Procedure3
     }
+
+    // Uncomment for testing Regex error messages
+//    match RouteGroup3 {
+//        "[[:ala:]" => Procedure4,
+//    }
 }
 
 pub fn main() {}
